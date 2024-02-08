@@ -5,6 +5,8 @@
 #include <ArduinoWebsockets.h>
 #include <ArduinoJson.h>
 
+typedef std::function<void()> ConnectedCallback;
+
 class NtfyTopicClient
 {
 private:
@@ -13,10 +15,12 @@ private:
   WiFiClientSecure wifiClient = WiFiClientSecure();
   websockets::WebsocketsClient websocketClient = websockets::WebsocketsClient();
   MsgCallback messageCallback;
+  ConnectedCallback connectedCallback;
   String topic;
   String serverURL;
   bool connected = false;
   bool busy = false;
+  bool lastConnectedState = false;
 
   void
   onNewMessage(websockets::WebsocketsMessage message);
@@ -32,7 +36,11 @@ private:
   void disconnect();
 
 public:
-  NtfyTopicClient(WiFiConnection &wifiConnection, String topic, MsgCallback messageCallback);
+  NtfyTopicClient(
+      const WiFiConnection &wifiConnection,
+      String topic,
+      const MsgCallback messageCallback,
+      ConnectedCallback connectedCallback);
 
   void sendMessage(String message);
 

@@ -1,7 +1,7 @@
 #include <Tone.h>
 
-Tone::Tone(int durationMs,
-           int frequencyHz) : durationMs(durationMs),
-                              frequencyHz(frequencyHz)
+Tone::Tone(int frequencyHz,
+           int durationMs) : durationMs(durationMs),
+                             frequencyHz(frequencyHz)
 {
 }

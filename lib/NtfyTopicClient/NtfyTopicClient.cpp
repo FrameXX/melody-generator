@@ -1,15 +1,16 @@
 #include <NtfyTopicClient.h>
 
-NtfyTopicClient::NtfyTopicClient(WiFiConnection &wifiConnection,
+NtfyTopicClient::NtfyTopicClient(const WiFiConnection &wifiConnection,
                                  String topic,
-                                 MsgCallback messageCallback) : wifiConnection(wifiConnection),
-                                                                messageCallback(messageCallback),
-                                                                topic(topic),
-                                                                serverURL("wss://ntfy.sh/" + topic + "/ws")
+                                 const MsgCallback messageCallback,
+                                 ConnectedCallback connectedCallback) : wifiConnection(wifiConnection),
+                                                                        messageCallback(messageCallback),
+                                                                        topic(topic),
+                                                                        serverURL("wss://ntfy.sh/" + topic + "/ws"),
+                                                                        connectedCallback(connectedCallback)
 {
   this->setupWifiClient();
   this->setupWebsocketClient();
-  this->connect();
 }
 
 void NtfyTopicClient::connect()
@@ -72,7 +73,12 @@ void NtfyTopicClient::sendMessage(String message)
 
 void NtfyTopicClient::keepAlive()
 {
-  reportValue(this->connected, "channel connection state");
+  const bool connected = this->connected;
+  // if (this->lastConnectedState != this->connected && connected)
+  //   this->connectedCallback();
+  // this->lastConnectedState = connected;
+
+  reportValue(connected, "channel connection state");
   if (!this->connected && !this->busy && this->wifiConnection.getConnected())
     this->connect();
 }

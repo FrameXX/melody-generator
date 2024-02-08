@@ -18,7 +18,7 @@ private:
                                 10);
   Ticker wifiConnectionTicker = Ticker([this]()
                                        { this->wifiConnection.keepAlive(); },
-                                       10000);
+                                       8000);
   Ticker ntfyClientKeepAliveTicker = Ticker([this]()
                                             { this->ntfyClient.keepAlive(); },
                                             5000);
@@ -30,6 +30,8 @@ private:
   updateTickers();
 
   void handleNewMsgCmd(MsgCmd msgCmd);
+
+  void onNtfyClientConnected();
 
 public:
   MelodyGenerator(Pin &speakerModulationPin, String ntfyTopic, const char *wifiSSID, const char *wifiPass);

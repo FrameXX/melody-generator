@@ -2,11 +2,15 @@
 
 NtfyMsgCmdClient::NtfyMsgCmdClient(WiFiConnection &wifiConnection,
                                    String topic,
-                                   MsgCmdCallback msgCmdCallback) : topicClient(wifiConnection,
-                                                                                topic,
-                                                                                [this](String msg)
-                                                                                { this->handleNewMsg(msg); }),
-                                                                    msgCmdCallback(msgCmdCallback)
+                                   MsgCmdCallback msgCmdCallback,
+                                   ConnectedCallback connectedCallback) : topicClient(
+                                                                              wifiConnection,
+                                                                              topic,
+                                                                              [this](String msg)
+                                                                              { this->handleNewMsg(msg); },
+                                                                              [this]()
+                                                                              { this->onConnect(); }),
+                                                                          msgCmdCallback(msgCmdCallback)
 {
 }
 
@@ -30,4 +34,9 @@ void NtfyMsgCmdClient::pollMsgCmd()
 void NtfyMsgCmdClient::keepAlive()
 {
   this->topicClient.keepAlive();
+}
+
+void NtfyMsgCmdClient::onConnect()
+{
+  this->connectedCallback();
 }
