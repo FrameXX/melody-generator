@@ -22,6 +22,15 @@ void Speaker::setVolume(int volume)
   this->modulationPin.modulate(volume);
 }
 
+bool Speaker::shouldRestartPlayback()
+{
+  if (!this->repeatMelody)
+    return false;
+  if (this->melodyRepeatCount < this->melodyRepeatedCount && this->melodyRepeatCount != 0)
+    return false;
+  return true;
+}
+
 void Speaker::updateMelodyPlayback()
 {
   if (this->playbackCompleted)
@@ -31,25 +40,26 @@ void Speaker::updateMelodyPlayback()
   this->updateLastMillis();
 
   const Tone playingTone = this->getPlayingTone();
-  if (this->tonePlayingDuration < static_cast<unsigned long>(playingTone.durationMs))
-    return;
-
-  if (this->currentToneIndex >= static_cast<int>(this->playingMelody.tones.size()) - 1)
+  const unsigned long toneDuration = static_cast<unsigned long>(playingTone.durationMs);
+  if (this->tonePlayingDuration < toneDuration)
   {
-    if (!this->repeatMelody)
+    const float tonePortion = (this->tonePlayingDuration * 1000) / toneDuration;
+    const int frequencyHz = map(tonePortion, 0, 1000, playingTone.startFrequencyHz, playingTone.endFrequencyHz);
+    this->playFrequency(frequencyHz);
+    return;
+  }
+
+  const bool playingLastTone = this->currentToneIndex >= static_cast<int>(this->playingMelody.tones.size()) - 1;
+  if (playingLastTone)
+  {
+    if (this->shouldRestartPlayback())
     {
-      this->playbackCompleted = true;
-      this->playFrequency(0);
+      this->melodyRepeatedCount++;
+      this->restartPlayback();
       return;
     }
-    if (this->melodyRepeatCount < this->melodyRepeatedCount && melodyRepeatCount != 0)
-    {
-      this->playbackCompleted = true;
-      this->playFrequency(0);
-      return;
-    }
-    this->melodyRepeatedCount++;
-    this->restartPlayback();
+    this->playbackCompleted = true;
+    this->playFrequency(0);
     return;
   }
 
@@ -60,7 +70,7 @@ void Speaker::nextTone()
 {
   this->currentToneIndex++;
   const Tone newTone = this->getPlayingTone();
-  this->playFrequency(newTone.frequencyHz);
+  this->playFrequency(newTone.startFrequencyHz);
   this->tonePlayingDuration = 0;
 }
 
@@ -71,7 +81,7 @@ void Speaker::restartPlayback()
   this->tonePlayingDuration = 0;
   this->updateLastMillis();
   const Tone firstTone = this->getPlayingTone();
-  this->playFrequency(firstTone.frequencyHz);
+  this->playFrequency(firstTone.startFrequencyHz);
 }
 
 void Speaker::playMelody(const Melody &melody, bool repeat, int repeatCount)

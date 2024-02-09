@@ -3,13 +3,11 @@
 class Tone
 {
 public:
+  int startFrequencyHz;
+  int endFrequencyHz;
   int durationMs;
-  int frequencyHz;
 
-  Tone(int frequencyHz, int durationMs);
-
-  Tone(const Tone &other)
-      : frequencyHz(other.frequencyHz), durationMs(other.durationMs)
-  {
-  }
+  Tone(int startFrequencyHz,
+       int endFrequencyHz,
+       int durationMs);
 };

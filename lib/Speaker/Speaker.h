@@ -9,7 +9,7 @@ class Speaker
 {
 private:
   Pin modulationPin;
-  Melody playingMelody = Melody(std::vector({Tone(300, 200), Tone(400, 200)}));
+  Melody playingMelody = Melody(std::vector({Tone(300, 300, 300), Tone(400, 400, 300)}));
   int currentToneIndex = 0;
   unsigned long tonePlayingDuration = 0;
   unsigned long lastMillis = 0;
@@ -30,6 +30,8 @@ private:
   void updateMelodyPlayback();
 
   void nextTone();
+
+  bool shouldRestartPlayback();
 
 public:
   Speaker(const Pin &modulationPin);
