@@ -26,7 +26,7 @@ bool Speaker::shouldRestartPlayback()
 {
   if (!this->repeatMelody)
     return false;
-  if (this->melodyRepeatCount < this->melodyRepeatedCount && this->melodyRepeatCount != 0)
+  if (this->melodyRepeatCount < this->melodyRepeatedCount + 1 && this->melodyRepeatCount != 0)
     return false;
   return true;
 }
