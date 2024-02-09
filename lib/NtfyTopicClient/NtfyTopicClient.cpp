@@ -74,9 +74,9 @@ void NtfyTopicClient::sendMessage(String message)
 void NtfyTopicClient::keepAlive()
 {
   const bool connected = this->connected;
-  // if (this->lastConnectedState != this->connected && connected)
-  //   this->connectedCallback();
-  // this->lastConnectedState = connected;
+  if (this->lastConnectedState != this->connected && connected)
+    this->connectedCallback();
+  this->lastConnectedState = connected;
 
   reportValue(connected, "channel connection state");
   if (!this->connected && !this->busy && this->wifiConnection.getConnected())

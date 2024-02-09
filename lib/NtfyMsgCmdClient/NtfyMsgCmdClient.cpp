@@ -10,7 +10,8 @@ NtfyMsgCmdClient::NtfyMsgCmdClient(WiFiConnection &wifiConnection,
                                                                               { this->handleNewMsg(msg); },
                                                                               [this]()
                                                                               { this->onConnect(); }),
-                                                                          msgCmdCallback(msgCmdCallback)
+                                                                          msgCmdCallback(msgCmdCallback),
+                                                                          connectedCallback(connectedCallback)
 {
 }
 

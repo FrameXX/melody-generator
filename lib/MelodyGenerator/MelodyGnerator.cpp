@@ -6,8 +6,11 @@ MelodyGenerator::MelodyGenerator(
     const char *wifiSSID,
     const char *wifiPass) : wifiConnection(wifiSSID, wifiPass),
                             speaker(speakerModulationPin),
-                            ntfyClient(wifiConnection, ntfyTopic, [this](MsgCmd msgCmd)
-                                       { this->handleNewMsgCmd(msgCmd); })
+                            ntfyClient(
+                                wifiConnection, ntfyTopic, [this](MsgCmd msgCmd)
+                                { this->handleNewMsgCmd(msgCmd); },
+                                [this]()
+                                { this->onNtfyClientConnected(); })
 {
   this->wifiConnection.getConnected();
 
@@ -50,7 +53,7 @@ void MelodyGenerator::updateTickers()
 
 void MelodyGenerator::onNtfyClientConnected()
 {
-  this->speaker.playMelody(Melody(std::vector({Tone(300, 200), Tone(300, 200), Tone(400, 200)})), false);
+  this->speaker.playMelody(Melody(std::vector({Tone(300, 200), Tone(0, 50), Tone(300, 200), Tone(400, 200)})), false);
 }
 
 void MelodyGenerator::update()

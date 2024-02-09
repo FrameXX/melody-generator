@@ -40,7 +40,7 @@ public:
       const WiFiConnection &wifiConnection,
       String topic,
       const MsgCallback messageCallback,
-      ConnectedCallback connectedCallback);
+      const ConnectedCallback connectedCallback = []() {});
 
   void sendMessage(String message);
 
