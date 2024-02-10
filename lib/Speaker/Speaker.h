@@ -25,8 +25,6 @@ private:
 
   void updateVolume();
 
-  void playFrequency(int frequency);
-
   void updateMelodyPlayback();
 
   void nextTone();
@@ -35,6 +33,8 @@ private:
 
 public:
   Speaker(const Pin &modulationPin);
+
+  void playFrequency(int frequency);
 
   void restartPlayback();
 
