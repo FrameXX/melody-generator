@@ -12,6 +12,7 @@ MelodyGenerator::MelodyGenerator(
                                 [this]()
                                 { this->onNtfyClientConnected(); })
 {
+  analogWriteRange(4095);
   this->wifiConnection.getConnected();
 
   this->speakerTicker.start();

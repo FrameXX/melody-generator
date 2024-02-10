@@ -23,7 +23,7 @@ private:
 
   void updateLastMillis();
 
-  void setVolume(int volume);
+  void updateVolume();
 
   void playFrequency(int frequency);
 

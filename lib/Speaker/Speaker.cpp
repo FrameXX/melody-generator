@@ -3,7 +3,7 @@
 Speaker::Speaker(const Pin &modulationPin) : modulationPin(modulationPin)
 {
   this->modulationPin.useAsOutput();
-  this->modulationPin.modulate(this->volume);
+  this->updateVolume();
   this->playMelody(this->playingMelody, false);
 }
 
@@ -17,9 +17,9 @@ void Speaker::updateLastMillis()
   this->lastMillis = millis();
 }
 
-void Speaker::setVolume(int volume)
+void Speaker::updateVolume()
 {
-  this->modulationPin.modulate(volume);
+  this->modulationPin.modulate(this->volume);
 }
 
 bool Speaker::shouldRestartPlayback()
