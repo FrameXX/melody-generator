@@ -27,17 +27,16 @@ void MelodyGenerator::handleNewMsgCmd(MsgCmd msgCmd)
 {
   const int toneArgumentsSize = 5;
 
-  if (msgCmd.arguments.size() < 2 || (msgCmd.arguments.size() - 1) % toneArgumentsSize != 0)
+  if (msgCmd.arguments.size() < 2 || msgCmd.arguments.size() % toneArgumentsSize != 0)
   {
     report("MsgCmd has invalid number of arguments");
     return;
   }
 
-  const bool repeat = msgCmd.commandId;
-  const int repeatCount = msgCmd.arguments[0];
+  const bool repeatCount = msgCmd.commandId;
 
   std::vector<Tone> tones;
-  for (unsigned int i = 1; i < msgCmd.arguments.size() - 1; i += toneArgumentsSize)
+  for (unsigned int i = 0; i < msgCmd.arguments.size() - 1; i += toneArgumentsSize)
   {
     const int startFrequency = msgCmd.arguments[i];
     const int endFrequency = msgCmd.arguments[i + 1];
@@ -49,7 +48,7 @@ void MelodyGenerator::handleNewMsgCmd(MsgCmd msgCmd)
   }
 
   const Melody melody(tones);
-  this->speaker.playMelody(melody, repeat, repeatCount);
+  this->speaker.playMelody(melody, repeatCount);
 }
 
 void MelodyGenerator::updateTickers()

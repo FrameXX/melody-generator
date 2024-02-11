@@ -26,11 +26,9 @@ void Speaker::setVolume(int volume)
 
 bool Speaker::shouldRestartPlayback()
 {
-  if (this->repeatMelody == 0)
-    return false;
   if (this->melodyRepeatCount == 0)
     return true;
-  if (this->melodyRepeatCount < this->melodyRepeatedCount + 1)
+  if (this->melodyRepeatCount <= this->melodyRepeatedCount)
     return false;
   return true;
 }
@@ -67,9 +65,9 @@ void Speaker::updateMelodyPlayback()
   const bool playingLastTone = this->currentToneIndex >= static_cast<int>(this->playingMelody.tones.size()) - 1;
   if (playingLastTone)
   {
+    this->melodyRepeatedCount++;
     if (this->shouldRestartPlayback())
     {
-      this->melodyRepeatedCount++;
       this->restartPlayback();
       return;
     }
@@ -100,10 +98,9 @@ void Speaker::restartPlayback()
   this->playFrequency(firstTone.startFrequency);
 }
 
-void Speaker::playMelody(const Melody &melody, bool repeat, int repeatCount)
+void Speaker::playMelody(const Melody &melody, int repeatCount)
 {
   this->playingMelody = melody;
-  this->repeatMelody = repeat;
   this->melodyRepeatedCount = 0;
   this->melodyRepeatCount = repeatCount;
   this->restartPlayback();

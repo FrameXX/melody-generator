@@ -15,7 +15,6 @@ private:
   int currentToneIndex = 0;
   unsigned long tonePlayingDuration = 0;
   unsigned long lastMillis = 0;
-  bool repeatMelody = false;
   int melodyRepeatCount = 0;
   int melodyRepeatedCount = 0;
 
@@ -43,7 +42,7 @@ public:
 
   void restartPlayback();
 
-  void playMelody(const Melody &melody, bool repeat = false, int repeatCount = 0);
+  void playMelody(const Melody &melody, int repeatCount = 1);
 
   void keepPlaying();
 };
