@@ -18,15 +18,19 @@ void Speaker::updateLastMillis()
 
 void Speaker::setVolume(int volume)
 {
-  volume = clamp(volume, 0, this->maxVolume);
+  volume = clamp(volume, 0, 100);
+  volume = amplify(volume, 0, 100, 2);
+  volume = map(volume, 0, 100, 0, this->maxVolume);
   this->modulationPin.modulate(volume);
 }
 
 bool Speaker::shouldRestartPlayback()
 {
-  if (!this->repeatMelody)
+  if (this->repeatMelody == 0)
     return false;
-  if (this->melodyRepeatCount < this->melodyRepeatedCount + 1 && this->melodyRepeatCount != 0)
+  if (this->melodyRepeatCount == 0)
+    return true;
+  if (this->melodyRepeatCount < this->melodyRepeatedCount + 1)
     return false;
   return true;
 }

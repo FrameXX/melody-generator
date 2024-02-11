@@ -12,7 +12,7 @@ MelodyGenerator::MelodyGenerator(
                                 [this]()
                                 { this->onNtfyClientConnected(); })
 {
-  analogWriteRange(2048);
+  analogWriteRange(8192);
   this->wifiConnection.getConnected();
   this->speaker.setVolume(100);
   this->speaker.playMelody(Melody(std::vector({Tone(300, 300, 300), Tone(400, 400, 300)})));
@@ -34,7 +34,8 @@ void MelodyGenerator::handleNewMsgCmd(MsgCmd msgCmd)
   }
 
   const bool repeat = msgCmd.commandId;
-  const bool repeatCount = msgCmd.arguments[0];
+  const int repeatCount = msgCmd.arguments[0];
+
   std::vector<Tone> tones;
   for (unsigned int i = 1; i < msgCmd.arguments.size() - 1; i += toneArgumentsSize)
   {

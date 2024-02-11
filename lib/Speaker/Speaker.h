@@ -5,6 +5,7 @@
 #include <Melody.h>
 #include <Report.h>
 #include <Clamp.h>
+#include <Amplify.h>
 
 class Speaker
 {
@@ -34,7 +35,7 @@ public:
   bool playbackCompleted = true;
   int maxVolume;
 
-  Speaker(const Pin &modulationPin, int maxVolume = 100);
+  Speaker(const Pin &modulationPin, int maxVolume = 400);
 
   void setVolume(int volume);
 
