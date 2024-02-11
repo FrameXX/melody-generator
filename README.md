@@ -1,6 +1,6 @@
 # Melody generator
 
-This is a code for ESP8266 board that has a passive buzzer connected. This code works with PlatformIO. The ESP8266 is able to play a melody (an array of tones) that was send to respective [ntfy.sh](https://ntfy.sh) topic. The default topic is [melody-generator](https://ntfy.sh/melody-generator).
+This is a code for ESP8266 board that has a passive buzzer connected. This code was made in PlatformIO environment. The ESP8266 is able to play a melody (an array of tones) that was send to respective [ntfy.sh](https://ntfy.sh) topic. The default topic is [melody-generator](https://ntfy.sh/melody-generator).
 
 ## Message structure
 
