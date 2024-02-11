@@ -4,6 +4,7 @@
 #include <Pin.h>
 #include <Melody.h>
 #include <Report.h>
+#include <Clamp.h>
 
 class Speaker
 {
@@ -16,14 +17,10 @@ private:
   bool repeatMelody = false;
   int melodyRepeatCount = 0;
   int melodyRepeatedCount = 0;
-  int volume = 1;
-  bool playbackCompleted = false;
 
   Tone getPlayingTone() const;
 
   void updateLastMillis();
-
-  void updateVolume();
 
   void updateMelodyPlayback();
 
@@ -31,14 +28,21 @@ private:
 
   bool shouldRestartPlayback();
 
+  void updateToneFeatures(const Tone tone);
+
 public:
-  Speaker(const Pin &modulationPin);
+  bool playbackCompleted = true;
+  int maxVolume;
+
+  Speaker(const Pin &modulationPin, int maxVolume = 100);
+
+  void setVolume(int volume);
 
   void playFrequency(int frequency);
 
   void restartPlayback();
 
-  void playMelody(const Melody &melody, bool repeat = true, int repeatCount = 0);
+  void playMelody(const Melody &melody, bool repeat = false, int repeatCount = 0);
 
   void keepPlaying();
 };

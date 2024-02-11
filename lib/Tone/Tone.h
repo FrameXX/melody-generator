@@ -3,11 +3,15 @@
 class Tone
 {
 public:
-  int startFrequencyHz;
-  int endFrequencyHz;
+  int startFrequency;
+  int endFrequency;
   int durationMs;
+  int startVolume;
+  int endVolume;
 
-  Tone(int startFrequencyHz,
-       int endFrequencyHz,
-       int durationMs);
+  Tone(int startFrequency,
+       int endFrequency,
+       int durationMs,
+       int startVolume = 50,
+       int endVolume = 50);
 };

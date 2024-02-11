@@ -1,9 +1,13 @@
 #include <Tone.h>
 
-Tone::Tone(int startFrequencyHz,
-           int endFrequencyHz,
-           int durationMs) : startFrequencyHz(startFrequencyHz),
-                             endFrequencyHz(endFrequencyHz),
-                             durationMs(durationMs)
+Tone::Tone(int startFrequency,
+           int endFrequency,
+           int durationMs,
+           int startVolume,
+           int endVolume) : startFrequency(startFrequency),
+                            endFrequency(endFrequency),
+                            durationMs(durationMs),
+                            startVolume(startVolume),
+                            endVolume(endVolume)
 {
 }

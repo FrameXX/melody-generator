@@ -1,10 +1,9 @@
 #include <Speaker.h>
 
-Speaker::Speaker(const Pin &modulationPin) : modulationPin(modulationPin)
+Speaker::Speaker(const Pin &modulationPin, int maxVolume) : modulationPin(modulationPin), maxVolume(maxVolume)
 {
   this->modulationPin.useAsOutput();
-  this->updateVolume();
-  this->playMelody(this->playingMelody, false);
+  this->setVolume(0);
 }
 
 Tone Speaker::getPlayingTone() const
@@ -17,9 +16,10 @@ void Speaker::updateLastMillis()
   this->lastMillis = millis();
 }
 
-void Speaker::updateVolume()
+void Speaker::setVolume(int volume)
 {
-  this->modulationPin.modulate(this->volume);
+  volume = clamp(volume, 0, this->maxVolume);
+  this->modulationPin.modulate(volume);
 }
 
 bool Speaker::shouldRestartPlayback()
@@ -31,21 +31,32 @@ bool Speaker::shouldRestartPlayback()
   return true;
 }
 
+void Speaker::updateToneFeatures(const Tone tone)
+{
+  const unsigned long toneDuration = static_cast<unsigned long>(tone.durationMs);
+  const float tonePortion = (this->tonePlayingDuration * 1000) / toneDuration;
+
+  const int frequency = map(tonePortion, 0, 1000, tone.startFrequency, tone.endFrequency);
+  this->playFrequency(frequency);
+  const int volume = map(tonePortion, 0, 1000, tone.startVolume, tone.endVolume);
+  this->setVolume(volume);
+}
+
 void Speaker::updateMelodyPlayback()
 {
   if (this->playbackCompleted)
     return;
+
   const unsigned long millisDiff = millis() - this->lastMillis;
   this->tonePlayingDuration += millisDiff;
   this->updateLastMillis();
 
   const Tone playingTone = this->getPlayingTone();
   const unsigned long toneDuration = static_cast<unsigned long>(playingTone.durationMs);
-  if (this->tonePlayingDuration < toneDuration)
+  const bool notPlayingOvertime = this->tonePlayingDuration < toneDuration;
+  if (notPlayingOvertime)
   {
-    const float tonePortion = (this->tonePlayingDuration * 1000) / toneDuration;
-    const int frequencyHz = map(tonePortion, 0, 1000, playingTone.startFrequencyHz, playingTone.endFrequencyHz);
-    this->playFrequency(frequencyHz);
+    this->updateToneFeatures(playingTone);
     return;
   }
 
@@ -59,7 +70,7 @@ void Speaker::updateMelodyPlayback()
       return;
     }
     this->playbackCompleted = true;
-    this->playFrequency(0);
+    this->setVolume(0);
     return;
   }
 
@@ -70,7 +81,8 @@ void Speaker::nextTone()
 {
   this->currentToneIndex++;
   const Tone newTone = this->getPlayingTone();
-  this->playFrequency(newTone.startFrequencyHz);
+  this->playFrequency(newTone.startFrequency);
+  this->setVolume(newTone.startVolume);
   this->tonePlayingDuration = 0;
 }
 
@@ -81,7 +93,7 @@ void Speaker::restartPlayback()
   this->tonePlayingDuration = 0;
   this->updateLastMillis();
   const Tone firstTone = this->getPlayingTone();
-  this->playFrequency(firstTone.startFrequencyHz);
+  this->playFrequency(firstTone.startFrequency);
 }
 
 void Speaker::playMelody(const Melody &melody, bool repeat, int repeatCount)
@@ -95,15 +107,7 @@ void Speaker::playMelody(const Melody &melody, bool repeat, int repeatCount)
 
 void Speaker::playFrequency(int frequency)
 {
-  if (frequency == 0)
-  {
-    this->modulationPin.modulate(0);
-    return;
-  }
-  else
-  {
-    this->modulationPin.modulate(this->volume);
-  }
+  frequency = clamp(frequency, 1, 3000);
   analogWriteFreq(frequency);
 }
 
