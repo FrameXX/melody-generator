@@ -18,7 +18,7 @@ private:
                                 10);
   Ticker wifiConnectionTicker = Ticker([this]()
                                        { this->wifiConnection.keepAlive(); },
-                                       8000);
+                                       10000);
   Ticker ntfyClientKeepAliveTicker = Ticker([this]()
                                             { this->ntfyClient.keepAlive(); },
                                             5000);
