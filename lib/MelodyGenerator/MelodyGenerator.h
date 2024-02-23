@@ -4,15 +4,16 @@
 #include <Speaker.h>
 #include <Ticker.h>
 #include <WiFiConnection.h>
-#include <NtfyMsgCmdClient.h>
+#include <NtfyTopicClient.h>
 #include <Report.h>
+#include <NumberList.h>
 
 class MelodyGenerator
 {
 private:
   WiFiConnection wifiConnection;
   Speaker speaker;
-  NtfyMsgCmdClient ntfyClient;
+  NtfyTopicClient ntfyClient;
   Ticker speakerTicker = Ticker([this]()
                                 { this->speaker.keepPlaying(); },
                                 10);
@@ -23,13 +24,13 @@ private:
                                             { this->ntfyClient.keepAlive(); },
                                             5000);
   Ticker ntfyClientPollingTicker = Ticker([this]()
-                                          { this->ntfyClient.pollMsgCmd(); },
+                                          { this->ntfyClient.pollMessages(); },
                                           200);
 
   void
   updateTickers();
 
-  void handleNewMsgCmd(MsgCmd msgCmd);
+  void handleNewMsg(const char *message);
 
   void onNtfyClientConnected();
 

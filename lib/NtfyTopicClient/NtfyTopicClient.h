@@ -10,7 +10,7 @@ typedef std::function<void()> ConnectedCallback;
 class NtfyTopicClient
 {
 private:
-  typedef std::function<void(String)> MsgCallback;
+  typedef std::function<void(const char *)> MsgCallback;
   WiFiConnection wifiConnection;
   WiFiClientSecure wifiClient = WiFiClientSecure();
   websockets::WebsocketsClient websocketClient = websockets::WebsocketsClient();

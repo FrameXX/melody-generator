@@ -7,8 +7,8 @@ MelodyGenerator::MelodyGenerator(
     const char *wifiPass) : wifiConnection(wifiSSID, wifiPass),
                             speaker(speakerModulationPin),
                             ntfyClient(
-                                wifiConnection, ntfyTopic, [this](MsgCmd msgCmd)
-                                { this->handleNewMsgCmd(msgCmd); },
+                                wifiConnection, ntfyTopic, [this](const char *message)
+                                { this->handleNewMsg(message); },
                                 [this]()
                                 { this->onNtfyClientConnected(); })
 {
@@ -23,26 +23,31 @@ MelodyGenerator::MelodyGenerator(
   this->ntfyClientPollingTicker.start();
 }
 
-void MelodyGenerator::handleNewMsgCmd(MsgCmd msgCmd)
+void MelodyGenerator::handleNewMsg(const char *message)
 {
   const int toneArgumentsSize = 5;
 
-  if (msgCmd.arguments.size() < 2 || msgCmd.arguments.size() % toneArgumentsSize != 0)
+  reportValue(message, "message");
+  const NumberList valuesList = NumberList::fromString(message);
+  const int valuesListSize = valuesList.numbers.size();
+  reportValue(valuesListSize, "message values count");
+
+  if (valuesListSize < 2 || (valuesListSize - 1) % toneArgumentsSize != 0)
   {
-    report("MsgCmd has invalid number of arguments");
+    report("message has invalid number of values");
     return;
   }
 
-  const bool repeatCount = msgCmd.commandId;
+  const bool repeatCount = valuesList.numbers[0];
 
   std::vector<Tone> tones;
-  for (unsigned int i = 0; i < msgCmd.arguments.size() - 1; i += toneArgumentsSize)
+  for (unsigned int i = 1; i < valuesListSize; i += toneArgumentsSize)
   {
-    const int startFrequency = msgCmd.arguments[i];
-    const int endFrequency = msgCmd.arguments[i + 1];
-    const int startVolume = msgCmd.arguments[i + 2];
-    const int endVolume = msgCmd.arguments[i + 3];
-    const int duration = msgCmd.arguments[i + 4];
+    const int startFrequency = valuesList.numbers[i];
+    const int endFrequency = valuesList.numbers[i + 1];
+    const int startVolume = valuesList.numbers[i + 2];
+    const int endVolume = valuesList.numbers[i + 3];
+    const int duration = valuesList.numbers[i + 4];
     const Tone tone(startFrequency, endFrequency, duration, startVolume, endVolume);
     tones.push_back(tone);
   }
