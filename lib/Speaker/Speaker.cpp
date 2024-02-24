@@ -6,9 +6,9 @@ Speaker::Speaker(const Pin &modulationPin, int maxVolume) : modulationPin(modula
   this->setVolume(0);
 }
 
-Tone Speaker::getPlayingTone() const
+Soundwave Speaker::getPlayingSoundwave() const
 {
-  return this->playingMelody.tones[this->currentToneIndex];
+  return this->playingMelody.tones[this->currentSoundwaveIndex];
 }
 
 void Speaker::updateLastMillis()
@@ -33,7 +33,7 @@ bool Speaker::shouldRestartPlayback()
   return true;
 }
 
-void Speaker::updateToneFeatures(const Tone tone)
+void Speaker::updateSoundwaveFeatures(const Soundwave tone)
 {
   const unsigned long toneDuration = static_cast<unsigned long>(tone.durationMs);
   const float tonePortion = (this->tonePlayingDuration * 1000) / toneDuration;
@@ -53,17 +53,17 @@ void Speaker::updateMelodyPlayback()
   this->tonePlayingDuration += millisDiff;
   this->updateLastMillis();
 
-  const Tone playingTone = this->getPlayingTone();
-  const unsigned long toneDuration = static_cast<unsigned long>(playingTone.durationMs);
+  const Soundwave playingSoundwave = this->getPlayingSoundwave();
+  const unsigned long toneDuration = static_cast<unsigned long>(playingSoundwave.durationMs);
   const bool notPlayingOvertime = this->tonePlayingDuration < toneDuration;
   if (notPlayingOvertime)
   {
-    this->updateToneFeatures(playingTone);
+    this->updateSoundwaveFeatures(playingSoundwave);
     return;
   }
 
-  const bool playingLastTone = this->currentToneIndex >= static_cast<int>(this->playingMelody.tones.size()) - 1;
-  if (playingLastTone)
+  const bool playingLastSoundwave = this->currentSoundwaveIndex >= static_cast<int>(this->playingMelody.tones.size()) - 1;
+  if (playingLastSoundwave)
   {
     this->melodyRepeatedCount++;
     if (this->shouldRestartPlayback())
@@ -76,26 +76,26 @@ void Speaker::updateMelodyPlayback()
     return;
   }
 
-  this->nextTone();
+  this->nextSoundwave();
 }
 
-void Speaker::nextTone()
+void Speaker::nextSoundwave()
 {
-  this->currentToneIndex++;
-  const Tone newTone = this->getPlayingTone();
-  this->playFrequency(newTone.startFrequency);
-  this->setVolume(newTone.startVolume);
+  this->currentSoundwaveIndex++;
+  const Soundwave newSoundwave = this->getPlayingSoundwave();
+  this->playFrequency(newSoundwave.startFrequency);
+  this->setVolume(newSoundwave.startVolume);
   this->tonePlayingDuration = 0;
 }
 
 void Speaker::restartPlayback()
 {
   this->playbackCompleted = false;
-  this->currentToneIndex = 0;
+  this->currentSoundwaveIndex = 0;
   this->tonePlayingDuration = 0;
   this->updateLastMillis();
-  const Tone firstTone = this->getPlayingTone();
-  this->playFrequency(firstTone.startFrequency);
+  const Soundwave firstSoundwave = this->getPlayingSoundwave();
+  this->playFrequency(firstSoundwave.startFrequency);
 }
 
 void Speaker::playMelody(const Melody &melody, int repeatCount)

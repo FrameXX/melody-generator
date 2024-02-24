@@ -1,5 +1,5 @@
 #include <Melody.h>
 
-Melody::Melody(std::vector<Tone> tones) : tones(tones)
+Melody::Melody(std::vector<Soundwave> tones) : tones(tones)
 {
 }

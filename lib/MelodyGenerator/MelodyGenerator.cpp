@@ -15,7 +15,7 @@ MelodyGenerator::MelodyGenerator(
   analogWriteRange(8192);
   this->wifiConnection.getConnected();
   this->speaker.setVolume(100);
-  this->speaker.playMelody(Melody(std::vector({Tone(300, 300, 300), Tone(400, 400, 300)})));
+  this->speaker.playMelody(Melody(std::vector({Soundwave(300, 300, 300), Soundwave(400, 400, 300)})));
 
   this->speakerTicker.start();
   this->wifiConnectionTicker.start();
@@ -25,7 +25,7 @@ MelodyGenerator::MelodyGenerator(
 
 void MelodyGenerator::handleNewMsg(const char *message)
 {
-  const int toneArgumentsSize = 5;
+  const int toneArgumentsSize = 3;
 
   reportValue(message, "message");
   const NumberList valuesList = NumberList::fromString(message);
@@ -40,7 +40,7 @@ void MelodyGenerator::handleNewMsg(const char *message)
 
   const bool repeatCount = valuesList.numbers[0];
 
-  std::vector<Tone> tones;
+  std::vector<Soundwave> tones;
   for (unsigned int i = 1; i < valuesListSize; i += toneArgumentsSize)
   {
     const int startFrequency = valuesList.numbers[i];
@@ -48,7 +48,7 @@ void MelodyGenerator::handleNewMsg(const char *message)
     const int startVolume = valuesList.numbers[i + 2];
     const int endVolume = valuesList.numbers[i + 3];
     const int duration = valuesList.numbers[i + 4];
-    const Tone tone(startFrequency, endFrequency, duration, startVolume, endVolume);
+    const Soundwave tone(startFrequency, endFrequency, duration, startVolume, endVolume);
     tones.push_back(tone);
   }
 
@@ -66,7 +66,7 @@ void MelodyGenerator::updateTickers()
 
 void MelodyGenerator::onNtfyClientConnected()
 {
-  this->speaker.playMelody(Melody(std::vector({Tone(400, 400, 300), Tone(300, 300, 300), Tone(400, 400, 300)})));
+  this->speaker.playMelody(Melody(std::vector({Soundwave(400, 400, 300), Soundwave(300, 300, 300), Soundwave(400, 400, 300)})));
 }
 
 void MelodyGenerator::update()

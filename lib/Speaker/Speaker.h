@@ -11,24 +11,24 @@ class Speaker
 {
 private:
   Pin modulationPin;
-  Melody playingMelody = Melody(std::vector({Tone(300, 300, 300), Tone(400, 400, 300)}));
-  int currentToneIndex = 0;
+  Melody playingMelody = Melody(std::vector({Soundwave(300, 300, 300), Soundwave(400, 400, 300)}));
+  int currentSoundwaveIndex = 0;
   unsigned long tonePlayingDuration = 0;
   unsigned long lastMillis = 0;
   int melodyRepeatCount = 0;
   int melodyRepeatedCount = 0;
 
-  Tone getPlayingTone() const;
+  Soundwave getPlayingSoundwave() const;
 
   void updateLastMillis();
 
   void updateMelodyPlayback();
 
-  void nextTone();
+  void nextSoundwave();
 
   bool shouldRestartPlayback();
 
-  void updateToneFeatures(const Tone tone);
+  void updateSoundwaveFeatures(const Soundwave tone);
 
 public:
   bool playbackCompleted = true;

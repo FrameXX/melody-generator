@@ -1,6 +1,6 @@
-#include <Tone.h>
+#include <Soundwave.h>
 
-Tone::Tone(int startFrequency,
+Soundwave::Soundwave(int startFrequency,
            int endFrequency,
            int durationMs,
            int startVolume,
