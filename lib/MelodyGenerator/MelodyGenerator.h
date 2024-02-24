@@ -16,7 +16,7 @@ private:
   NtfyTopicClient ntfyClient;
   Ticker speakerTicker = Ticker([this]()
                                 { this->speaker.keepPlaying(); },
-                                10);
+                                2);
   Ticker wifiConnectionTicker = Ticker([this]()
                                        { this->wifiConnection.keepAlive(); },
                                        10000);

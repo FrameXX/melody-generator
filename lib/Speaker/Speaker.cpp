@@ -33,14 +33,14 @@ bool Speaker::shouldRestartPlayback()
   return true;
 }
 
-void Speaker::updateSoundwaveFeatures(const Soundwave tone)
+void Speaker::updateSoundwaveFeatures(const Soundwave soundwave)
 {
-  const unsigned long toneDuration = static_cast<unsigned long>(tone.durationMs);
-  const float tonePortion = (this->tonePlayingDuration * 1000) / toneDuration;
+  const unsigned long soundwaveDuration = static_cast<unsigned long>(soundwave.durationMs);
+  const float soundwavePortion = (this->soundwavePlayingDuration * 1000) / soundwaveDuration;
 
-  const int frequency = map(tonePortion, 0, 1000, tone.startFrequency, tone.endFrequency);
+  const int frequency = map(soundwavePortion, 0, 1000, soundwave.startFrequency, soundwave.endFrequency);
   this->playFrequency(frequency);
-  const int volume = map(tonePortion, 0, 1000, tone.startVolume, tone.endVolume);
+  const int volume = map(soundwavePortion, 0, 1000, soundwave.startVolume, soundwave.endVolume);
   this->setVolume(volume);
 }
 
@@ -50,12 +50,12 @@ void Speaker::updateMelodyPlayback()
     return;
 
   const unsigned long millisDiff = millis() - this->lastMillis;
-  this->tonePlayingDuration += millisDiff;
+  this->soundwavePlayingDuration += millisDiff;
   this->updateLastMillis();
 
   const Soundwave playingSoundwave = this->getPlayingSoundwave();
-  const unsigned long toneDuration = static_cast<unsigned long>(playingSoundwave.durationMs);
-  const bool notPlayingOvertime = this->tonePlayingDuration < toneDuration;
+  const unsigned long soundwaveDuration = static_cast<unsigned long>(playingSoundwave.durationMs);
+  const bool notPlayingOvertime = this->soundwavePlayingDuration < soundwaveDuration;
   if (notPlayingOvertime)
   {
     this->updateSoundwaveFeatures(playingSoundwave);
@@ -85,14 +85,14 @@ void Speaker::nextSoundwave()
   const Soundwave newSoundwave = this->getPlayingSoundwave();
   this->playFrequency(newSoundwave.startFrequency);
   this->setVolume(newSoundwave.startVolume);
-  this->tonePlayingDuration = 0;
+  this->soundwavePlayingDuration = 0;
 }
 
 void Speaker::restartPlayback()
 {
   this->playbackCompleted = false;
   this->currentSoundwaveIndex = 0;
-  this->tonePlayingDuration = 0;
+  this->soundwavePlayingDuration = 0;
   this->updateLastMillis();
   const Soundwave firstSoundwave = this->getPlayingSoundwave();
   this->playFrequency(firstSoundwave.startFrequency);

@@ -23,7 +23,7 @@ void setup()
 
   while (true)
   {
-    delay(10);
+    delay(2);
     generator.update();
   }
 }

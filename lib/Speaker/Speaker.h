@@ -13,7 +13,7 @@ private:
   Pin modulationPin;
   Melody playingMelody = Melody(std::vector({Soundwave(300, 300, 300), Soundwave(400, 400, 300)}));
   int currentSoundwaveIndex = 0;
-  unsigned long tonePlayingDuration = 0;
+  unsigned long soundwavePlayingDuration = 0;
   unsigned long lastMillis = 0;
   int melodyRepeatCount = 0;
   int melodyRepeatedCount = 0;
@@ -28,7 +28,7 @@ private:
 
   bool shouldRestartPlayback();
 
-  void updateSoundwaveFeatures(const Soundwave tone);
+  void updateSoundwaveFeatures(const Soundwave soundwave);
 
 public:
   bool playbackCompleted = true;

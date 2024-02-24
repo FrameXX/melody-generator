@@ -25,32 +25,21 @@ MelodyGenerator::MelodyGenerator(
 
 void MelodyGenerator::handleNewMsg(const char *message)
 {
-  const int toneArgumentsSize = 3;
+  const int soundwaveValuesSize = 2;
 
   reportValue(message, "message");
   const NumberList valuesList = NumberList::fromString(message);
-  const int valuesListSize = valuesList.numbers.size();
+  const unsigned int valuesListSize = valuesList.numbers.size();
   reportValue(valuesListSize, "message values count");
 
-  if (valuesListSize < 2 || (valuesListSize - 1) % toneArgumentsSize != 0)
+  if (valuesListSize < 2 || (valuesListSize - 1) % soundwaveValuesSize != 0)
   {
     report("message has invalid number of values");
     return;
   }
 
+  const Melody melody = Melody::fromNumberList(soundwaveValuesSize, valuesList);
   const bool repeatCount = valuesList.numbers[0];
-
-  std::vector<Soundwave> soundwaves;
-  for (unsigned int i = 1; i < valuesListSize; i += toneArgumentsSize)
-  {
-    const int startFrequency = valuesList.numbers[i];
-    const int endFrequency = valuesList.numbers[i + 1];
-    const int duration = valuesList.numbers[i + 4];
-    const Soundwave tone(startFrequency, endFrequency, duration, 50, 50);
-    soundwaves.push_back(tone);
-  }
-
-  const Melody melody(soundwaves);
   this->speaker.playMelody(melody, repeatCount);
 }
 

@@ -6,14 +6,14 @@ This is a code for ESP8266 board that has a passive buzzer connected. This code 
 
 ### Definition
 
-`repeat_count tone1_start_frequency tone1_end_frequency tone1_start_volume tone1_end_volume tone1_duration tone2_start_frequency tone2_end_frequency tone2_start_volume tone2_end_volume tone2_duration`
+`repeat_count soundwave1_start_frequency soundwave1_end_frequency soundwave1_start_volume soundwave1_end_volume soundwave1_duration soundwave2_start_frequency soundwave2_end_frequency soundwave2_start_volume soundwave2_end_volume soundwave2_duration`
 
 **All arguments are integers.**
 
 - repeat_count - Defines how many times should the melody repeat. When set to 0 the melody will repeat indefinitely.
-- tonex_start_frequency, tonex_end_frequency - During its playback the to frequency changes linearly from start frequency to end frequency. The frequency is defined in hz and can be values from 1hz up to 3000hz.
-- tonex_start_volume, tonex_end_volume - Same as for start end frequency. The volume is a % from 0 to 100.
-- tonex_duration - Defines duration of the tone playback in miliseconds.
+- soundwavex_start_frequency, soundwavex_end_frequency - During its playback the to frequency changes linearly from start frequency to end frequency. The frequency is defined in hz and can be values from 1hz up to 3000hz.
+- soundwavex_start_volume, soundwavex_end_volume - Same as for start end frequency. The volume is a % from 0 to 100.
+- soundwavex_duration - Defines duration of the soundwave playback in miliseconds.
 
 ### Example
 
