@@ -6,7 +6,7 @@
 class Melody
 {
 public:
-  std::vector<Soundwave> tones;
+  std::vector<Soundwave> soundwaves;
 
-  Melody(std::vector<Soundwave> tones);
+  Melody(std::vector<Soundwave> soundwaves);
 };

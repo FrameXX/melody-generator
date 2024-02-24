@@ -8,7 +8,7 @@ Speaker::Speaker(const Pin &modulationPin, int maxVolume) : modulationPin(modula
 
 Soundwave Speaker::getPlayingSoundwave() const
 {
-  return this->playingMelody.tones[this->currentSoundwaveIndex];
+  return this->playingMelody.soundwaves[this->currentSoundwaveIndex];
 }
 
 void Speaker::updateLastMillis()
@@ -62,7 +62,7 @@ void Speaker::updateMelodyPlayback()
     return;
   }
 
-  const bool playingLastSoundwave = this->currentSoundwaveIndex >= static_cast<int>(this->playingMelody.tones.size()) - 1;
+  const bool playingLastSoundwave = this->currentSoundwaveIndex >= static_cast<int>(this->playingMelody.soundwaves.size()) - 1;
   if (playingLastSoundwave)
   {
     this->melodyRepeatedCount++;

@@ -40,19 +40,17 @@ void MelodyGenerator::handleNewMsg(const char *message)
 
   const bool repeatCount = valuesList.numbers[0];
 
-  std::vector<Soundwave> tones;
+  std::vector<Soundwave> soundwaves;
   for (unsigned int i = 1; i < valuesListSize; i += toneArgumentsSize)
   {
     const int startFrequency = valuesList.numbers[i];
     const int endFrequency = valuesList.numbers[i + 1];
-    const int startVolume = valuesList.numbers[i + 2];
-    const int endVolume = valuesList.numbers[i + 3];
     const int duration = valuesList.numbers[i + 4];
-    const Soundwave tone(startFrequency, endFrequency, duration, startVolume, endVolume);
-    tones.push_back(tone);
+    const Soundwave tone(startFrequency, endFrequency, duration, 50, 50);
+    soundwaves.push_back(tone);
   }
 
-  const Melody melody(tones);
+  const Melody melody(soundwaves);
   this->speaker.playMelody(melody, repeatCount);
 }
 
