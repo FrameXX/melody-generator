@@ -8,10 +8,12 @@
 #include <Report.h>
 #include <NumberList.h>
 #include <Amplify.h>
+#include <RollingAverage.h>
 
 class MelodyGenerator
 {
 private:
+  RollingAverage<int> averageVolumeSliderVoltage = RollingAverage<int>(10);
   Pin volumeSliderPin;
   WiFiConnection wifiConnection;
   Speaker speaker;
@@ -30,7 +32,7 @@ private:
                                           200);
   Ticker volumeSliderTicker = Ticker([this]()
                                      { this->updateVolume(); },
-                                     100);
+                                     50);
 
   void updateTickers();
 
