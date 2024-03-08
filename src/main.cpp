@@ -18,8 +18,9 @@ void setup()
   report("init start");
 
   Pin speakerModulationPin(14);
+  Pin volumeSliderPin(A0);
 
-  MelodyGenerator generator(speakerModulationPin, "melody-generator", WIFI_SSID, WIFI_PASS);
+  MelodyGenerator generator(speakerModulationPin, volumeSliderPin, "melody-generator", WIFI_SSID, WIFI_PASS);
 
   while (true)
   {

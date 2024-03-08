@@ -2,9 +2,11 @@
 
 MelodyGenerator::MelodyGenerator(
     Pin &speakerModulationPin,
+    Pin &volumeSliderPin,
     String ntfyTopic,
     const char *wifiSSID,
-    const char *wifiPass) : wifiConnection(wifiSSID, wifiPass),
+    const char *wifiPass) : volumeSliderPin(volumeSliderPin),
+                            wifiConnection(wifiSSID, wifiPass),
                             speaker(speakerModulationPin),
                             ntfyClient(
                                 wifiConnection, ntfyTopic, [this](const char *message)
@@ -12,15 +14,14 @@ MelodyGenerator::MelodyGenerator(
                                 [this]()
                                 { this->onNtfyClientConnected(); })
 {
-  analogWriteRange(8192);
   this->wifiConnection.getConnected();
-  this->speaker.setVolume(100);
   this->speaker.playMelody(Melody(std::vector({Soundwave(300, 300, 300), Soundwave(400, 400, 300)})));
 
   this->speakerTicker.start();
   this->wifiConnectionTicker.start();
   this->ntfyClientKeepAliveTicker.start();
   this->ntfyClientPollingTicker.start();
+  this->volumeSliderTicker.start();
 }
 
 void MelodyGenerator::handleNewMsg(const char *message)
@@ -43,12 +44,20 @@ void MelodyGenerator::handleNewMsg(const char *message)
   this->speaker.playMelody(melody, repeatCount);
 }
 
+void MelodyGenerator::updateVolume()
+{
+  const int voltage = this->volumeSliderPin.readAnalog();
+  const int volume = amplify(voltage, 0, 1023, 9);
+  this->speaker.setMaxVolumeDutyCycle(volume);
+}
+
 void MelodyGenerator::updateTickers()
 {
   this->speakerTicker.update();
   this->wifiConnectionTicker.update();
   this->ntfyClientKeepAliveTicker.update();
   this->ntfyClientPollingTicker.update();
+  this->volumeSliderTicker.update();
 }
 
 void MelodyGenerator::onNtfyClientConnected()

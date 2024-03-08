@@ -1,9 +1,10 @@
 #include <Speaker.h>
 
-Speaker::Speaker(const Pin &modulationPin, int maxVolume) : modulationPin(modulationPin), maxVolume(maxVolume)
+Speaker::Speaker(const Pin &modulationPin, int maxVolumeDutyCycle) : modulationPin(modulationPin), maxVolumeDutyCycle(maxVolumeDutyCycle)
 {
+  analogWriteRange(8192);
   this->modulationPin.useAsOutput();
-  this->setVolume(0);
+  this->updateDutyCycle();
 }
 
 Soundwave Speaker::getPlayingSoundwave() const
@@ -16,12 +17,24 @@ void Speaker::updateLastMillis()
   this->lastMillis = millis();
 }
 
+void Speaker::updateDutyCycle()
+{
+  const int dutyCycle = map(this->volume, 0, 100, 0, this->maxVolumeDutyCycle);
+  this->modulationPin.modulate(dutyCycle);
+}
+
 void Speaker::setVolume(int volume)
 {
   volume = clamp(volume, 0, 100);
   volume = amplify(volume, 0, 100, 2);
-  volume = map(volume, 0, 100, 0, this->maxVolume);
-  this->modulationPin.modulate(volume);
+  this->volume = map(volume, 0, 100, 0, this->maxVolumeDutyCycle);
+  this->updateDutyCycle();
+}
+
+void Speaker::setMaxVolumeDutyCycle(int dutyCycle)
+{
+  this->maxVolumeDutyCycle = clamp(dutyCycle, 0, 8192);
+  this->updateDutyCycle();
 }
 
 bool Speaker::shouldRestartPlayback()
@@ -42,6 +55,11 @@ void Speaker::updateSoundwaveFeatures(const Soundwave soundwave)
   this->playFrequency(frequency);
   const int volume = map(soundwavePortion, 0, 1000, soundwave.startVolume, soundwave.endVolume);
   this->setVolume(volume);
+}
+
+void Speaker::mute()
+{
+  this->setVolume(0);
 }
 
 void Speaker::updateMelodyPlayback()
@@ -72,7 +90,7 @@ void Speaker::updateMelodyPlayback()
       return;
     }
     this->playbackCompleted = true;
-    this->setVolume(0);
+    this->mute();
     return;
   }
 

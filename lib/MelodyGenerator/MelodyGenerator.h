@@ -7,10 +7,12 @@
 #include <NtfyTopicClient.h>
 #include <Report.h>
 #include <NumberList.h>
+#include <Amplify.h>
 
 class MelodyGenerator
 {
 private:
+  Pin volumeSliderPin;
   WiFiConnection wifiConnection;
   Speaker speaker;
   NtfyTopicClient ntfyClient;
@@ -26,16 +28,24 @@ private:
   Ticker ntfyClientPollingTicker = Ticker([this]()
                                           { this->ntfyClient.pollMessages(); },
                                           200);
+  Ticker volumeSliderTicker = Ticker([this]()
+                                     { this->updateVolume(); },
+                                     100);
 
-  void
-  updateTickers();
+  void updateTickers();
+
+  void updateVolume();
 
   void handleNewMsg(const char *message);
 
   void onNtfyClientConnected();
 
 public:
-  MelodyGenerator(Pin &speakerModulationPin, String ntfyTopic, const char *wifiSSID, const char *wifiPass);
+  MelodyGenerator(Pin &speakerModulationPin,
+                  Pin &volumeSliderPin,
+                  String ntfyTopic,
+                  const char *wifiSSID,
+                  const char *wifiPass);
 
   void update();
 };

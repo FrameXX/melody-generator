@@ -12,5 +12,5 @@ public:
 
   Melody(std::vector<Soundwave> soundwaves);
 
-  static Melody fromNumberList(int soundwaveValuesSize, const NumberList &numberList, int startGainLinearRampDurationMs = 100, float gainLinearRampDurationRatio = 0.65, int maxFinishGainLinearRampDurationMs = 1000);
+  static Melody fromNumberList(int soundwaveValuesSize, const NumberList &numberList, int startGainLinearRampDurationMs = 125, float gainLinearRampDurationRatio = 0.7, int maxFinishGainLinearRampDurationMs = 1000);
 };

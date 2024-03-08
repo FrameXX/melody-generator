@@ -22,7 +22,7 @@ Melody Melody::fromNumberList(int soundwaveValuesSize, const NumberList &numberL
 
     const int soundwaveDurationMs = totalDurationMs - 100;
     const int actualStartGainLinearRampDurationMs = std::min(100 + soundwaveDurationMs, startGainLinearRampDurationMs);
-    const Soundwave startGainSoundwave(frequency, frequency, actualStartGainLinearRampDurationMs, 0, 50);
+    const Soundwave startGainSoundwave(frequency, frequency, actualStartGainLinearRampDurationMs, 0, 100);
     soundwaves.push_back(startGainSoundwave);
 
     if (soundwaveDurationMs > 0)
@@ -45,7 +45,7 @@ Melody Melody::fromNumberList(int soundwaveValuesSize, const NumberList &numberL
     finishGainLinearRampDurationMs = std::min(finishGainLinearRampDurationMs, maxFinishGainLinearRampDurationMs);
     const int actualFinishGainLinearRampDurationMs = std::min(finishGainLinearRampDurationMs, restDurationMs);
 
-    const Soundwave finishGainSoundwave(frequency, frequency, actualFinishGainLinearRampDurationMs, 50, 0);
+    const Soundwave finishGainSoundwave(frequency, frequency, actualFinishGainLinearRampDurationMs, 100, 0);
     soundwaves.push_back(finishGainSoundwave);
   }
 

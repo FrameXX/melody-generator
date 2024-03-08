@@ -17,6 +17,7 @@ private:
   unsigned long lastMillis = 0;
   int melodyRepeatCount = 0;
   int melodyRepeatedCount = 0;
+  int volume = 0;
 
   Soundwave getPlayingSoundwave() const;
 
@@ -26,15 +27,21 @@ private:
 
   void nextSoundwave();
 
+  void updateDutyCycle();
+
   bool shouldRestartPlayback();
 
   void updateSoundwaveFeatures(const Soundwave soundwave);
 
+  void mute();
+
 public:
   bool playbackCompleted = true;
-  int maxVolume;
+  int maxVolumeDutyCycle;
 
-  Speaker(const Pin &modulationPin, int maxVolume = 400);
+  Speaker(const Pin &modulationPin, int maxVolumeDutyCycle = 400);
+
+  void setMaxVolumeDutyCycle(int dutyCycle);
 
   void setVolume(int volume);
 
