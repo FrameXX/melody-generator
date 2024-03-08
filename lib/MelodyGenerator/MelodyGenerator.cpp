@@ -47,7 +47,10 @@ void MelodyGenerator::handleNewMsg(const char *message)
 void MelodyGenerator::updateVolume()
 {
   const int voltage = this->volumeSliderPin.readAnalog();
-  const int volume = amplify(voltage, 0, 1023, 9);
+  this->averageVolumeSliderVoltage.addValue(voltage);
+
+  const int averageVoltage = averageVolumeSliderVoltage.getAverage();
+  const int volume = amplify(averageVoltage, 0, 1023, 9);
   this->speaker.setMaxVolumeDutyCycle(volume);
 }
 
