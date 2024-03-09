@@ -50,7 +50,7 @@ void MelodyGenerator::updateVolume()
   this->averageVolumeSliderVoltage.addValue(voltage);
 
   const int averageVoltage = averageVolumeSliderVoltage.getAverage();
-  const int volume = amplify(averageVoltage, 0, 1023, 9);
+  const int volume = amplify(1023 - averageVoltage, 0, 1023, 2);
   this->speaker.setMaxVolumeDutyCycle(volume);
 }
 
