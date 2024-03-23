@@ -1,14 +1,17 @@
 #include <WiFiConnection.h>
 
-WiFiConnection::WiFiConnection(const char *SSID, const char *password) : SSID(SSID), password(password)
+WiFiConnection::WiFiConnection(const char *SSID, const char *password, int connectionTimeoutMs) : SSID(SSID), password(password), connectionTimeoutMs(connectionTimeoutMs)
 {
   this->connect();
 }
 
 void WiFiConnection::connect()
 {
+  if (connecting && (millis() - this->lastConnectionTimeMs <= this->connectionTimeoutMs))
+    return;
   report("trying to connect to wifi");
-  delay(1000);
+  this->connecting = true;
+  this->lastConnectionTimeMs = millis();
   WiFi.begin(this->SSID, this->password);
 }
 
