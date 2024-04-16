@@ -1,4 +1,4 @@
-# Návod jak aktualizovat heslo či SSID ke kterému se má počítáč připojit.
+# Návod jak aktualizovat název či heslo Wi-Fi uložené v ESP8266 (ke které se má připojit).
 
 ## Co budete potřebovat
  - Počítač s Linux, Windows či MacOS (cokoliv kde lze nainstalovat drivery pro ovládání ESP8266 a tím pádem je schopné nahrávat kód na ESP8266)
