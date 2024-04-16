@@ -6,7 +6,7 @@ This is a code for ESP8266 board that has a passive buzzer connected. This code 
 
 ### Definition
 
-`repeat_count soundwave1_frequency soundwave1_duration soundwave2_frequency soundwave2_duration`
+`repeat_count soundwave1_frequency soundwave1_duration soundwave2_frequency soundwave2_duration ...`
 
 **All arguments are integers.**
 
