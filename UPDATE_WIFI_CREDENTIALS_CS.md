@@ -6,11 +6,11 @@
   - V editoru nainstalované rozšíření [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) a v případě VSCodium i [officiální rozšíření pro kódování v C++ ](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) a [C++ rozšiřovací balíček](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
 
 ## Postup
- - Stáhněte si kód z [repozitáře](https://github.com/FrameXX/melody-generator) do ZIPu (zelené tlačítko "Code" a potom "Download ZIP")
- - Rozbalte ZIP do samostatné složky
- - Otevřete složku v editoru
- - Ve složce `lib` vytvořte složku `WiFiCredentials`
- - V této složce vytvořte soubor `WiFiCredentials.h`
+ - Stáhněte si kód z [repozitáře](https://github.com/FrameXX/melody-generator) do ZIPu (zelené tlačítko "Code" a potom "Download ZIP").
+ - Rozbalte ZIP do samostatné složky.
+ - Otevřete složku v editoru.
+ - Ve složce `lib` vytvořte složku `WiFiCredentials`.
+ - V této složce vytvořte soubor `WiFiCredentials.h`.
  - Do souboru zkopírujte následující kód příčemž přepište `název wifiny` a `heslo od wifiny` jejich reálnými hodnotami:
 ```c
 #pragma once
