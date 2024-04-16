@@ -3,7 +3,7 @@
 ## Co budete potřebovat
  - Počítač s Linux, Windows či MacOS (cokoliv kde lze nainstalovat drivery pro ovládání ESP8266 a tím pádem je schopné nahrávat kód na ESP8266)
  - [Editor který podporuje rozšíčení PlatformIO](https://docs.platformio.org/en/latest/integration/ide/index.html) (Doporučuji [VSCodium](https://vscodium.com/).)
-  - V editoru nainstalované rozšíření [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) a v případě VSCodium i [officiální rozšíření pro kódování v C++ ](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) a [C++ rozšiřovací balíček](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
+  - V editoru nainstalované rozšíření [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) a v případě VSCodium (nebo VSCode) i [officiální rozšíření pro kódování v C++ ](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools) a [C++ rozšiřovací balíček](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools-extension-pack)
 
 ## Postup
  - Stáhněte si kód z [repozitáře](https://github.com/FrameXX/melody-generator) do ZIPu (zelené tlačítko "Code" a potom "Download ZIP").
